@@ -1,99 +1,78 @@
 # Codename
 
-> an RFC1178 implementation to generate pronounceable, sometimes even memorable, _"superheroe like"_ codenames, consisting of a random combination of adjective and a noun.
+> an [RFC1178](https://tools.ietf.org/html/rfc1178) implementation to generate pronounceable, sometimes even memorable, _"superheroe like"_ codenames, consisting of a random combination of adjective and noun.
 
 
 ## Usage
 
-Codename it's a [package](https://golang.org/doc/code#ImportingRemote), so all you need is all you need to do is import it into your code
+Codename it's a [package](https://golang.org/doc/code#ImportingRemote), so all you need to do is import it into your code (:point_right: [Try it!](https://play.golang.org/p/mVJl2ZL9pwA)):
 
-```sh
-$ git clone https://github.com/lucasepe/terraform-provider-codename
-```
+```go
+package main
 
-Enter the provider directory:
+import (
+	"fmt"
+	"github.com/lucasepe/codename"
+)
 
-```sh
-$ cd terraform-provider-codename
-```
+func main() {
+	rng, err := codename.DefaultRNG()
+	if err != nil {
+		panic(err)
+	}
 
-Build it:
-
-```sh
-$ make build
-```
-
-To install the plugin locally, type:
-
-```sh
-$ make install
-```
-
-## Usage
-
-Define a provider requirement:
-
-```hcl
-terraform {
-  required_providers {
-    codename = {
-      version = ">= 0.1.0"
-      source  = "github.com/lucasepe/codename"
-    }
-  }
+	for i := 0; i < 8; i++ {
+		name := codename.Generate(rng, 0, false)
+		fmt.Println(name)
+	}
 }
 ```
 
-Declare the provider:
+This is how the output looks like (since it's random your will be different).
 
-```hcl
-provider "codename" {}
+```txt
+absolute-karatecha
+moving-colleen
+game-nova
+fine-madrox
+pro-penguin
+keen-morbius
+firm-iron
+refined-epoch
 ```
 
-Use the `codename` resource defined in this provider:
+You can request the addition of a token to create even more entropy [Try it!](https://play.golang.org/p/60sK2OD8bAH)):
 
-```hcl
-resource "codename" "example1" {
-  snakefy      = true
-  token_length = 4
-}
+```go
+package main
 
-resource "codename" "example2" {
-  prefix = "it->"
-}
+import (
+	"fmt"
+	"github.com/lucasepe/codename"
+)
 
-output "codename1" {
-  value = codename.example1.id
-}
+func main() {
+	rng, err := codename.DefaultRNG()
+	if err != nil {
+		panic(err)
+	}
 
-output "codename2" {
-  value = codename.example2.id
+	for i := 0; i < 8; i++ {
+		name := codename.Generate(rng, 4, false)
+		fmt.Println(name)
+	}
 }
 ```
 
-Initialize a working directory:
+note the token (with the specified length) added at the end:
 
-```sh
-$ terraform init
-Initializing the backend...
-
-Initializing provider plugins...
-- Finding github.com/lucasepe/codename versions matching ">= 0.1.0"...
-- Installing github.com/lucasepe/codename v0.1.0...
-- Installed github.com/lucasepe/codename v0.1.0 (unauthenticated)
-
-...
-```
-
-Execute the terraform script:
-
-```sh
-$ terraform apply -auto-approve
-...
-Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
-
-Outputs:
-
-codename1 = "adequate_retro_girl_8157"
-codename2 = "it->still-karate"
+```txt
+hopeful-toad-men-133b
+blessed-man-thing-2bdc
+unique-starfox-4271
+full-butterfly-2470
+accepted-santa-claus-e24e
+merry-belphegor-65da
+willing-medusa-cdf4
+adapting-nightstar-f626
 ```
