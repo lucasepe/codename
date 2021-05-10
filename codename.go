@@ -11,11 +11,6 @@ import (
 	"encoding/binary"
 )
 
-const (
-	numbers = "0123456789"
-	hex     = "0123456789abcdef"
-)
-
 // NewCryptoSeed returns a crypto level random numbers generator seed.
 // It returns an error and a seed equals to -1 if the underlying system call fails.
 func NewCryptoSeed() (int64, error) {
@@ -86,15 +81,22 @@ func randomToken(rng *rand.Rand, size int) string {
 	return buffer.String()
 }
 
+var (
+	nonAlphaNumerics          = regexp.MustCompile(`(?m)[^a-zA-Z0-9]`)
+	camelCaseSplit            = regexp.MustCompile(`(?m)[A-Z][a-z]`)
+	consecutiveUnderscores    = regexp.MustCompile(`(?m)_+`)
+	leadingTrailingUnderscore = regexp.MustCompile(`^_|_$`)
+)
+
 // snakefy converts a given string to snake_case.
 func snakefy(in string) string {
 	// Remove non alpha-numerics
-	out := regexp.MustCompile(`(?m)[^a-zA-Z0-9]`).ReplaceAllString(in, "_")
+	out := nonAlphaNumerics.ReplaceAllString(in, "_")
 	// Split on uppercase characters followed by lower case (e.g. camel case)
-	out = regexp.MustCompile(`(?m)[A-Z][a-z]`).ReplaceAllString(out, "_$0")
+	out = camelCaseSplit.ReplaceAllString(out, "_$0")
 	// Remove any consecutive underscores
-	out = regexp.MustCompile(`(?m)_+`).ReplaceAllString(out, "_")
+	out = consecutiveUnderscores.ReplaceAllString(out, "_")
 	// Remove leading/trailing underscore
-	out = regexp.MustCompile(`^_|_$`).ReplaceAllString(out, "")
+	out = leadingTrailingUnderscore.ReplaceAllString(out, "")
 	return strings.ToLower(out)
 }
