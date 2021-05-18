@@ -4,8 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"math/rand"
-	"regexp"
-	"strings"
 
 	crypto_rand "crypto/rand"
 	"encoding/binary"
@@ -37,18 +35,14 @@ func DefaultRNG() (*rand.Rand, error) {
 }
 
 // Generate generates and returns a random hero name.
-// It takes two parameters: the token length (set 0 to skip it) and
-// a snakecase flag to generate a "Snake Case" string.
-func Generate(rng *rand.Rand, tokenLength int, snakecase bool) string {
+// Eventually you can specify a `tokenLength` greater
+// then zero to generate and additional token and create
+// even more entropy.
+func Generate(rng *rand.Rand, tokenLength int) string {
 	res := fmt.Sprintf("%s-%s", randomAdjective(rng), randomNoun(rng))
 	if tokenLength > 0 {
 		res = fmt.Sprintf("%s-%s", res, randomToken(rng, tokenLength))
 	}
-
-	if snakecase {
-		return snakefy(res)
-	}
-
 	return res
 }
 
@@ -79,24 +73,4 @@ func randomToken(rng *rand.Rand, size int) string {
 	}
 
 	return buffer.String()
-}
-
-var (
-	nonAlphaNumerics          = regexp.MustCompile(`(?m)[^a-zA-Z0-9]`)
-	camelCaseSplit            = regexp.MustCompile(`(?m)[A-Z][a-z]`)
-	consecutiveUnderscores    = regexp.MustCompile(`(?m)_+`)
-	leadingTrailingUnderscore = regexp.MustCompile(`^_|_$`)
-)
-
-// snakefy converts a given string to snake_case.
-func snakefy(in string) string {
-	// Remove non alpha-numerics
-	out := nonAlphaNumerics.ReplaceAllString(in, "_")
-	// Split on uppercase characters followed by lower case (e.g. camel case)
-	out = camelCaseSplit.ReplaceAllString(out, "_$0")
-	// Remove any consecutive underscores
-	out = consecutiveUnderscores.ReplaceAllString(out, "_")
-	// Remove leading/trailing underscore
-	out = leadingTrailingUnderscore.ReplaceAllString(out, "")
-	return strings.ToLower(out)
 }

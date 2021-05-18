@@ -1,11 +1,13 @@
 # Codename
 
-> an [RFC1178](https://tools.ietf.org/html/rfc1178) implementation to generate pronounceable, sometimes even memorable, _"superheroe like"_ codenames, consisting of a random combination of adjective and noun.
+[![Go Report Card](https://goreportcard.com/badge/github.com/lucasepe/codename?style=flat-square)](https://goreportcard.com/report/github.com/lucasepe/codename) &nbsp;&nbsp;&nbsp;  [![PkgGoDev](https://pkg.go.dev/badge/github.com/lucasepe/codename)](https://pkg.go.dev/github.com/lucasepe/codename)
+
+> an [RFC1178](https://tools.ietf.org/html/rfc1178) implementation to generate pronounceable, sometimes even memorable, _"superhero like"_ codenames, consisting of a random combination of adjective and noun.
 
 
 ## Usage
 
-Codename it's a [package](https://golang.org/doc/code#ImportingRemote), so all you need to do is import it into your code (:point_right: [Try it!](https://play.golang.org/p/mVJl2ZL9pwA)):
+Codename it's a [package](https://golang.org/doc/code#ImportingRemote), so all you need to do is import it into your code:
 
 ```go
 package main
@@ -22,7 +24,7 @@ func main() {
 	}
 
 	for i := 0; i < 8; i++ {
-		name := codename.Generate(rng, 0, false)
+		name := codename.Generate(rng, 0)
 		fmt.Println(name)
 	}
 }
@@ -41,7 +43,7 @@ firm-iron
 refined-epoch
 ```
 
-You can request the addition of a token to create even more entropy [Try it!](https://play.golang.org/p/60sK2OD8bAH)):
+You can request the addition of a token to create even more entropy:
 
 ```go
 package main
@@ -58,7 +60,7 @@ func main() {
 	}
 
 	for i := 0; i < 8; i++ {
-		name := codename.Generate(rng, 4, false)
+		name := codename.Generate(rng, 4)
 		fmt.Println(name)
 	}
 }

@@ -13,7 +13,7 @@ func TestGenerator(t *testing.T) {
 	rng := rand.New(rand.NewSource(seed))
 
 	for i := 0; i < 10; i++ {
-		name := Generate(rng, 3, false)
+		name := Generate(rng, 3)
 		t.Logf("%v", name)
 	}
 }
@@ -22,10 +22,10 @@ func TestReturnsSameForSameSeed(t *testing.T) {
 	var seed int64 = 1001
 	rng := rand.New(rand.NewSource(seed))
 
-	n1 := Generate(rng, 4, false)
+	n1 := Generate(rng, 4)
 
 	rng = rand.New(rand.NewSource(seed))
-	n2 := Generate(rng, 4, false)
+	n2 := Generate(rng, 4)
 
 	t.Logf("%v -- %v", n1, n2)
 	if n1 != n2 {
@@ -41,7 +41,7 @@ func TestCryptoSeed(t *testing.T) {
 
 	rng := rand.New(rand.NewSource(seed))
 
-	id := Generate(rng, 4, false)
+	id := Generate(rng, 4)
 
 	parts := strings.Split(id, "-")
 	if got, want := len(parts[len(parts)-1]), 4; got != want {
