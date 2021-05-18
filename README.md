@@ -7,7 +7,7 @@
 
 ## Usage
 
-Codename it's a [package](https://golang.org/doc/code#ImportingRemote), so all you need to do is import it into your code:
+Codename it's a [package](https://golang.org/doc/code#ImportingRemote), so all you need to do is import it into your code ([Try it!](https://play.golang.org/p/TrbW97r7aAO)):
 
 ```go
 package main
@@ -43,7 +43,7 @@ firm-iron
 refined-epoch
 ```
 
-You can request the addition of a token to create even more entropy:
+You can request the addition of a token to create even more entropy ([Try it!](https://play.golang.org/p/5gZTKfLyIUN)):
 
 ```go
 package main
